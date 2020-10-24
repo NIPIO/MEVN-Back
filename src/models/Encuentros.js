@@ -8,7 +8,9 @@ const Encuentros = new Schema({
 	src: String,
 	date: String,
 	time: String,
-	clima: Object
+	clima: Object,
+	lat: String,
+	lng: String
 })
 
 module.exports = mongoose.model('Task', Encuentros)
