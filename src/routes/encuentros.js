@@ -1,6 +1,10 @@
 const express = require('express')
 const router = express.Router(); //objecto para almacenar rutas
 const Encuentros = require('../models/Encuentros') //modelo que viene de Models, es así como se hacen petciones a mongoose
+const imageSearch = require('image-search-google');
+const client = new imageSearch('7a460b780129f0c50', 'AIzaSyCCGge0AcnsCP2THzX3LI7FIVHObEqYpAo');
+const options = {page:1};
+
 
 //Puedo trabajar de 3 maneras para esperar respuesta de la base:
 //los metodos son independientes de las maneras
@@ -14,13 +18,25 @@ router.get('/' , (req, res) => { //cuando soliciten esta ruta...
 }) 
 
 ////////////// 2- Async Await //////////////
-
+// 7a460b780129f0c50
 router.post('/', async (req, res) => {
-	const newEncuentro = new Encuentros(req.body)
-	await newEncuentro.save()
-	res.json({
-		status: 'Encuentro guardado'
-	})
+	client.search(req.body.localidad, options)
+	    .then(images => {
+	    	const newEncuentro = new Encuentros(req.body)
+	    	newEncuentro.src = images[0].url
+			newEncuentro.save().then(()=>
+				res.json({
+					status: 'Encuentro guardado'
+				})
+			)
+	    })
+    	.catch(error =>
+			res.json({
+				error: true,
+				status: error
+			})
+    	);
+    	
 })
 
 
