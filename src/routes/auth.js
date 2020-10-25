@@ -38,33 +38,38 @@ router.get('/signUp' , (req, res) => {
 
 //Se obtiene con req.body
 router.get('/signIn' , (req, res) => { 
-	User.find({"email": req.body.email, "password": req.body.password}).then(user=>{ 
-		// hay usuario
-		if (user.length > 0) {
-			res.json({
-				error: false
-			})
-		} else {
-			//no hay pero existe el mail
-			User.find({"email": req.body.email}).then(user=>{ 
-				console.log(user)
-				if (user.length > 0) {
-					res.json({
-						error: true,
-						color: 'red',
-						mensaje: 'Contraseña incorrecta.'
-					})
-				} else {
-					res.json({
-						error: true,
-						color: 'red',
-						mensaje: 'Credenciales incorrectas. Logueate, por favor.'
-					})
-				}
-			})
+		   	res.json({
+			a:  req.body,
+			b:  req.query,
+			c:  req.params
+		}) 
+	// User.find({"email": req.body.email, "password": req.body.password}).then(user=>{ 
+	// 	// hay usuario
+	// 	if (user.length > 0) {
+	// 		res.json({
+	// 			error: false
+	// 		})
+	// 	} else {
+	// 		//no hay pero existe el mail
+	// 		User.find({"email": req.body.email}).then(user=>{ 
+	// 			console.log(user)
+	// 			if (user.length > 0) {
+	// 				res.json({
+	// 					error: true,
+	// 					color: 'red',
+	// 					mensaje: 'Contraseña incorrecta.'
+	// 				})
+	// 			} else {
+	// 				res.json({
+	// 					error: true,
+	// 					color: 'red',
+	// 					mensaje: 'Credenciales incorrectas. Logueate, por favor.'
+	// 				})
+	// 			}
+	// 		})
 
-		}
-	})
+	// 	}
+	// })
 }) 
 
 
