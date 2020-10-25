@@ -3,42 +3,37 @@ const router = express.Router(); //objecto para almacenar rutas
 const User = require('../models/Auth') //modelo que viene de Models, es así como se hacen petciones a mongoose
 
 /*
-IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY PARA OBJETOS ENVIADOS EN LA PETICION!!!
-IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY PARA OBJETOS ENVIADOS EN LA PETICION!!!
-IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY PARA OBJETOS ENVIADOS EN LA PETICION!!!
-IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY PARA OBJETOS ENVIADOS EN LA PETICION!!!
-IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY PARA OBJETOS ENVIADOS EN LA PETICION!!!
+IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY/REQ.QUERY PARA OBJETOS ENVIADOS EN LA PETICION!!!
+IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY/REQ.QUERY PARA OBJETOS ENVIADOS EN LA PETICION!!!
+IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY/REQ.QUERY PARA OBJETOS ENVIADOS EN LA PETICION!!!
+IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY/REQ.QUERY PARA OBJETOS ENVIADOS EN LA PETICION!!!
+IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY/REQ.QUERY PARA OBJETOS ENVIADOS EN LA PETICION!!!
 */
 
 
 
 //Se obtiene con req.body
+//Se obtiene con req.query EN HEROKU
 router.get('/signUp' , (req, res) => {
-		   	res.json({
-			a:  req.body,
-			b:  req.query,
-			c:  req.params,
-			d: 'signUp'
-		})  
-	// User.find({"email": req.body.email}).then(user=>{ 
-	// 	//hay un registro
-	// 	if(user.length > 0){
-	// 		res.json({
-	// 			existeUsuario: true,
-	// 			color: 'red',
-	// 			mensaje: 'Existe ya un usuario con ese mail'
-	// 		})
-	// 	} else {
-	// 		const newUser = new User(req.body)
-	// 		newUser.save().then(()=>
-	// 			res.json({
-	// 				existeUsuario: false,
-	// 				color: 'green',
-	// 				mensaje: 'Usuario creado!'
-	// 			})
-	// 		)
-	// 	}
-	// })
+	User.find({"email": req.body.email}).then(user=>{ 
+		//hay un registro
+		if(user.length > 0){
+			res.json({
+				existeUsuario: true,
+				color: 'red',
+				mensaje: 'Existe ya un usuario con ese mail'
+			})
+		} else {
+			const newUser = new User(req.body)
+			newUser.save().then(()=>
+				res.json({
+					existeUsuario: false,
+					color: 'green',
+					mensaje: 'Usuario creado!'
+				})
+			)
+		}
+	})
 }) 
 
 
@@ -77,36 +72,22 @@ router.get('/signIn' , (req, res) => {
 
 //Se obtiene con req.params
 router.delete('/:id', (req, res) => {
-			   	res.json({
-			a:  req.body,
-			b:  req.query,
-			c:  req.params,
-			d: 'delete user'
-			
+	User.findByIdAndDelete(req.params.id, function (err, docs) { 
+	   	err ? 	
+	   	res.json({
+			status:  err
+		}) 
+		:  
+		res.json({
+			status: "Usuario eliminado"
 		})
-	// User.findByIdAndDelete(req.params.id, function (err, docs) { 
-	//    	err ? 	
-	//    	res.json({
-	// 		status:  err
-	// 	}) 
-	// 	:  
-	// 	res.json({
-	// 		status: "Usuario eliminado"
-	// 	})
-	// }) 
+	}) 
 });
 
 
 router.get('/all' , (req, res) => { 
-			   	res.json({
-			a:  req.body,
-			b:  req.query,
-			c:  req.params,
-			d: 'get user'
-			
-		}) 
-	// User.find().then(users=>{ 
-	// 	res.json({users})
-	// })
+	User.find().then(users=>{ 
+		res.json({users})
+	})
 }) 
 module.exports = router

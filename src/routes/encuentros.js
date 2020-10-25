@@ -18,8 +18,8 @@ IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY PARA OBJET
 
 
 ////////////// 1- Promesas (.then()) //////////////
-router.get('/' , (req, res) => { //cuando soliciten esta ruta...
-	Encuentros.find().then(response=>{ //.find es como un Select * from
+router.get('/' , (req, res) => { 
+	Encuentros.find().then(response=>{ 
 		console.log('Promesas', Encuentros)
 		res.json(response)
 	})
@@ -28,79 +28,53 @@ router.get('/' , (req, res) => { //cuando soliciten esta ruta...
 ////////////// 2- Async Await //////////////
 //Se obtiene con req.body
 router.post('/', async (req, res) => {			
-			   	res.json({
-			a:  req.body,
-			b:  req.query,
-			c:  req.params,
-			d: 'POST Enc'
-		}) 
-	// client.search(req.body.localidad, options)
- //    .then(images => {
- //    	const newEncuentro = new Encuentros(req.body)
- //    	newEncuentro.src = images[0].url
-	// 	newEncuentro.save().then(()=>
-	// 		res.json({
-	// 			status: 'Encuentro guardado'
-	// 		})
-	// 	)
- //    })
-	// .catch(error =>
-	// 	res.json({
-	// 		error: true,
-	// 		status: error
-	// 	})
-	// );
+	client.search(req.body.localidad, options)
+    .then(images => {
+    	const newEncuentro = new Encuentros(req.body)
+    	newEncuentro.src = images[0].url
+		newEncuentro.save().then(()=>
+			res.json({
+				status: 'Encuentro guardado'
+			})
+		)
+    })
+	.catch(error =>
+		res.json({
+			error: true,
+			status: error
+		})
+	);
 })
 
 
 router.put('/:id' , async (req, res) => {
-			   	res.json({
-			a:  req.body,
-			b:  req.query,
-			c:  req.params,
-			d: 'put Enc'
-
-		}) 
-	// await Encuentros.findByIdAndUpdate(req.params.id, req.body)
-	// res.json({
-	// 	status: 'Encuentro actualizado'
-	// })
+	await Encuentros.findByIdAndUpdate(req.params.id, req.body)
+	res.json({
+		status: 'Encuentro actualizado'
+	})
 })
 
-
-router.get('/:id' , (req, res) => { //cuando soliciten esta ruta...
-			   	res.json({
-			a:  req.body,
-			b:  req.query,
-			c:  req.params,
-			d: 'get Enc'
-
-		}) 
-	// Encuentros.findById({_id: req.params.id}).then(response=>{ //.find es como un Select * from
-	// 	res.json(response)
-	// })
+//req.params.id para el id
+router.get('/:id' , (req, res) => {
+	Encuentros.findById({_id: req.params.id}).then(response=>{
+		res.json(response)
+	})
 }) 
 
 
 ////////////// 3- Callbacks (funciones dentro de funciones) //////////////
+//req.params.id para el id
 router.delete('/:id', (req, res) => {
-			   	res.json({
-			a:  req.body,
-			b:  req.query,
-			c:  req.params,
-			d: 'delete Enc'
-			
+	Encuentros.findByIdAndDelete(req.params.id, function (err, docs) { 
+	   	err ? 	
+	   	res.json({
+			status:  err
 		}) 
-	// Encuentros.findByIdAndDelete(req.params.id, function (err, docs) { 
-	//    	err ? 	
-	//    	res.json({
-	// 		status:  err
-	// 	}) 
-	// 	:  
-	// 	res.json({
-	// 		status: "Encuentro eliminado"
-	// 	})
-	// }) 
+		:  
+		res.json({
+			status: "Encuentro eliminado"
+		})
+	}) 
 });
 
 
