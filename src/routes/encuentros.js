@@ -28,52 +28,79 @@ router.get('/' , (req, res) => { //cuando soliciten esta ruta...
 ////////////// 2- Async Await //////////////
 //Se obtiene con req.body
 router.post('/', async (req, res) => {			
-	client.search(req.body.localidad, options)
-	    .then(images => {
-	    	const newEncuentro = new Encuentros(req.body)
-	    	newEncuentro.src = images[0].url
-			newEncuentro.save().then(()=>
-				res.json({
-					status: 'Encuentro guardado'
-				})
-			)
-	    })
-    	.catch(error =>
-			res.json({
-				error: true,
-				status: error
-			})
-    	);
+			   	res.json({
+			a:  req.body,
+			b:  req.query,
+			c:  req.params,
+			d: 'POST Enc'
+		}) 
+	// client.search(req.body.localidad, options)
+ //    .then(images => {
+ //    	const newEncuentro = new Encuentros(req.body)
+ //    	newEncuentro.src = images[0].url
+	// 	newEncuentro.save().then(()=>
+	// 		res.json({
+	// 			status: 'Encuentro guardado'
+	// 		})
+	// 	)
+ //    })
+	// .catch(error =>
+	// 	res.json({
+	// 		error: true,
+	// 		status: error
+	// 	})
+	// );
 })
 
 
 router.put('/:id' , async (req, res) => {
-	await Encuentros.findByIdAndUpdate(req.params.id, req.body)
-	res.json({
-		status: 'Encuentro actualizado'
-	})
+			   	res.json({
+			a:  req.body,
+			b:  req.query,
+			c:  req.params,
+			d: 'put Enc'
+
+		}) 
+	// await Encuentros.findByIdAndUpdate(req.params.id, req.body)
+	// res.json({
+	// 	status: 'Encuentro actualizado'
+	// })
 })
 
 
 router.get('/:id' , (req, res) => { //cuando soliciten esta ruta...
-	Encuentros.findById({_id: req.params.id}).then(response=>{ //.find es como un Select * from
-		res.json(response)
-	})
+			   	res.json({
+			a:  req.body,
+			b:  req.query,
+			c:  req.params,
+			d: 'get Enc'
+
+		}) 
+	// Encuentros.findById({_id: req.params.id}).then(response=>{ //.find es como un Select * from
+	// 	res.json(response)
+	// })
 }) 
 
 
 ////////////// 3- Callbacks (funciones dentro de funciones) //////////////
 router.delete('/:id', (req, res) => {
-	Encuentros.findByIdAndDelete(req.params.id, function (err, docs) { 
-	   	err ? 	
-	   	res.json({
-			status:  err
+			   	res.json({
+			a:  req.body,
+			b:  req.query,
+			c:  req.params,
+			d: 'delete Enc'
+			
 		}) 
-		:  
-		res.json({
-			status: "Encuentro eliminado"
-		})
-	}) 
+	// Encuentros.findByIdAndDelete(req.params.id, function (err, docs) { 
+	//    	err ? 	
+	//    	res.json({
+	// 		status:  err
+	// 	}) 
+	// 	:  
+	// 	res.json({
+	// 		status: "Encuentro eliminado"
+	// 	})
+	// }) 
 });
 
 
