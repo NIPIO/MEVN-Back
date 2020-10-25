@@ -27,12 +27,7 @@ router.get('/signUp' , (req, res) => {
 
 router.get('/signIn' , (req, res) => { 
 			res.json({
-				body: req.body.email
-			})
-			res.json({
-				params: req.params.email
-			})
-			res.json({
+				params: req.params.email,
 				query: req.query.email
 			})
 	// User.find({"email": req.body.email, "password": req.body.password}).then(user=>{ 
