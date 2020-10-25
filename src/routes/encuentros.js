@@ -18,7 +18,6 @@ router.get('/' , (req, res) => { //cuando soliciten esta ruta...
 }) 
 
 ////////////// 2- Async Await //////////////
-// 7a460b780129f0c50
 router.post('/', async (req, res) => {
 	client.search(req.body.localidad, options)
 	    .then(images => {

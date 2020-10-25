@@ -5,6 +5,8 @@ var cors = require('cors')
 
 //Settings
 const app = express();
+// mongoose.connect('mongodb://localhost/mevn-database')
+//datos en connect cuando se crea el cluster https://cloud.mongodb.com/v2/5f94e334f114b91d818a5cc4#clusters
 mongoose.connect('mongodb+srv://nmpiovano:cnrt1234@encuentrosdb.jyi5k.mongodb.net/encuentrosDB?retryWrites=true&w=majority')
 	.then(db => console.log('Db conectada'))
 	.catch(error => console.log(error))

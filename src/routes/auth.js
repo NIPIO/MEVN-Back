@@ -6,17 +6,22 @@ const User = require('../models/Auth') //modelo que viene de Models, es así com
 router.get('/signUp' , (req, res) => { 
 	User.find({"email": req.query.email}).then(user=>{ 
 		//hay un registro
-		user.length > 0 ?
-		res.json({
-			existeUsuario: true,
-			color: 'red',
-			mensaje: 'Existe ya un usuario con ese mail'
-		}) : 
-		res.json({
-			existeUsuario: false,
-			color: 'green',
-			mensaje: 'Usuario creado!'
-		})
+		if(user.length > 0){
+			res.json({
+				existeUsuario: true,
+				color: 'red',
+				mensaje: 'Existe ya un usuario con ese mail'
+			})
+		} else {
+			const newUser = new User(req.body)
+			newUser.save().then(()=>
+				res.json({
+					existeUsuario: false,
+					color: 'green',
+					mensaje: 'Usuario creado!'
+				})
+			)
+		}
 	})
 }) 
 
