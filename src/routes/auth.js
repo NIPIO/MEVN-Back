@@ -15,7 +15,7 @@ IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY/REQ.QUERY 
 //Se obtiene con req.body
 //Se obtiene con req.query EN HEROKU
 router.get('/signUp' , (req, res) => {
-	User.find({"email": req.body.email}).then(user=>{ 
+	User.find({"email": req.query.email}).then(user=>{ 
 		//hay un registro
 		if(user.length > 0){
 			res.json({
@@ -24,7 +24,7 @@ router.get('/signUp' , (req, res) => {
 				mensaje: 'Existe ya un usuario con ese mail'
 			})
 		} else {
-			const newUser = new User(req.body)
+			const newUser = new User(req.query)
 			newUser.save().then(()=>
 				res.json({
 					existeUsuario: false,
@@ -40,7 +40,7 @@ router.get('/signUp' , (req, res) => {
 //Se obtiene con req.body EN LOCAL
 //Se obtiene con req.query EN HEROKU
 router.get('/signIn' , (req, res) => { 
-	User.find({"email": req.body.email, "password": req.body.password}).then(user=>{ 
+	User.find({"email": req.query.email, "password": req.query.password}).then(user=>{ 
 		// hay usuario
 		if (user.length > 0) {
 			res.json({
@@ -48,7 +48,7 @@ router.get('/signIn' , (req, res) => {
 			})
 		} else {
 			//no hay pero existe el mail
-			User.find({"email": req.body.email}).then(user=>{ 
+			User.find({"email": req.query.email}).then(user=>{ 
 				console.log(user)
 				if (user.length > 0) {
 					res.json({
