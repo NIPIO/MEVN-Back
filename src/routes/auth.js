@@ -7,29 +7,26 @@ router.get('/signUp' , (req, res) => {
 	//Se obtiene con req.query EN HEROKU	
 	let params = req.query
 	Object.keys(params).length < 1 ? params = req.body : null
-	res.json({
-		a: params
-	})
 
-	// User.find({"email": params.email}).then(user=>{ 
-	// 	//hay un registro
-	// 	if(user.length > 0){
-	// 		res.json({
-	// 			existeUsuario: true,
-	// 			color: 'red',
-	// 			mensaje: 'Existe ya un usuario con ese mail'
-	// 		})
-	// 	} else {
-	// 		const newUser = new User(params)
-	// 		newUser.save().then(()=>
-	// 			res.json({
-	// 				existeUsuario: false,
-	// 				color: 'green',
-	// 				mensaje: 'Usuario creado!'
-	// 			})
-	// 		)
-	// 	}
-	// })
+	User.find({"email": params.email}).then(user=>{ 
+		//hay un registro
+		if(user.length > 0){
+			res.json({
+				existeUsuario: true,
+				color: 'red',
+				mensaje: 'Existe ya un usuario con ese mail'
+			})
+		} else {
+			const newUser = new User(params)
+			newUser.save().then(()=>
+				res.json({
+					existeUsuario: false,
+					color: 'green',
+					mensaje: 'Usuario creado!'
+				})
+			)
+		}
+	})
 }) 
 
 
