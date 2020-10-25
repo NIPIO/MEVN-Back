@@ -5,7 +5,7 @@ var cors = require('cors')
 
 //Settings
 const app = express();
-mongoose.connect('mongodb://localhost/mevn-database')
+mongoose.connect('mongodb+srv://nmpiovano:cnrt1234@encuentrosdb.jyi5k.mongodb.net/encuentrosDB?retryWrites=true&w=majority')
 	.then(db => console.log('Db conectada'))
 	.catch(error => console.log(error))
 
