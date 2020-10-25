@@ -6,8 +6,16 @@ const client = new imageSearch('7a460b780129f0c50', 'AIzaSyCCGge0AcnsCP2THzX3LI7
 const options = {page:1};
 
 
-//Puedo trabajar de 3 maneras para esperar respuesta de la base:
-//los metodos son independientes de las maneras
+/*
+IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY PARA OBJETOS ENVIADOS EN LA PETICION!!!
+IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY PARA OBJETOS ENVIADOS EN LA PETICION!!!
+IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY PARA OBJETOS ENVIADOS EN LA PETICION!!!
+IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY PARA OBJETOS ENVIADOS EN LA PETICION!!!
+IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY PARA OBJETOS ENVIADOS EN LA PETICION!!!
+*/
+
+
+
 
 ////////////// 1- Promesas (.then()) //////////////
 router.get('/' , (req, res) => { //cuando soliciten esta ruta...
@@ -18,7 +26,8 @@ router.get('/' , (req, res) => { //cuando soliciten esta ruta...
 }) 
 
 ////////////// 2- Async Await //////////////
-router.post('/', async (req, res) => {
+//Se obtiene con req.body
+router.post('/', async (req, res) => {			
 	client.search(req.body.localidad, options)
 	    .then(images => {
 	    	const newEncuentro = new Encuentros(req.body)
@@ -35,7 +44,6 @@ router.post('/', async (req, res) => {
 				status: error
 			})
     	);
-    	
 })
 
 
