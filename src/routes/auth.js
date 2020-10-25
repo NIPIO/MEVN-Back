@@ -2,81 +2,70 @@ const express = require('express')
 const router = express.Router(); //objecto para almacenar rutas
 const User = require('../models/Auth') //modelo que viene de Models, es así como se hacen petciones a mongoose
 
-/*
-IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY/REQ.QUERY PARA OBJETOS ENVIADOS EN LA PETICION!!!
-IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY/REQ.QUERY PARA OBJETOS ENVIADOS EN LA PETICION!!!
-IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY/REQ.QUERY PARA OBJETOS ENVIADOS EN LA PETICION!!!
-IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY/REQ.QUERY PARA OBJETOS ENVIADOS EN LA PETICION!!!
-IMPORTANTE REQ.PARAMS PARA OBTENER IDS PASADOS POR PARMETRO. REQ.BODY/REQ.QUERY PARA OBJETOS ENVIADOS EN LA PETICION!!!
-*/
-
-
-
-//Se obtiene con req.body
-//Se obtiene con req.query EN HEROKU
 router.get('/signUp' , (req, res) => {
+	//Se obtiene con req.body
+	//Se obtiene con req.query EN HEROKU	
 	let params = req.query
-	params.length < 1 ? params = req.body : null
-	res.json({
-		a: params
+	Object.keys(params).length < 1 ? params = req.body : null
+	
+
+	User.find({"email": params.email}).then(user=>{ 
+		//hay un registro
+		if(user.length > 0){
+			res.json({
+				existeUsuario: true,
+				color: 'red',
+				mensaje: 'Existe ya un usuario con ese mail'
+			})
+		} else {
+			const newUser = new User(params)
+			newUser.save().then(()=>
+				res.json({
+					existeUsuario: false,
+					color: 'green',
+					mensaje: 'Usuario creado!'
+				})
+			)
+		}
 	})
-	// User.find({"email": params.email}).then(user=>{ 
-	// 	//hay un registro
-	// 	if(user.length > 0){
-	// 		res.json({
-	// 			existeUsuario: true,
-	// 			color: 'red',
-	// 			mensaje: 'Existe ya un usuario con ese mail'
-	// 		})
-	// 	} else {
-	// 		const newUser = new User(params)
-	// 		newUser.save().then(()=>
-	// 			res.json({
-	// 				existeUsuario: false,
-	// 				color: 'green',
-	// 				mensaje: 'Usuario creado!'
-	// 			})
-	// 		)
-	// 	}
-	// })
 }) 
 
 
-//Se obtiene con req.body EN LOCAL
-//Se obtiene con req.query EN HEROKU
-router.get('/signIn' , (req, res) => { 
-	let params = req.query
-	params.length < 1 ? params = req.body : null
-	res.json({
-		a: params
-	})
-	// User.find({"email": params.email, "password": params.password}).then(user=>{ 
-	// 	// hay usuario
-	// 	if (user.length > 0) {
-	// 		res.json({
-	// 			error: false
-	// 		})
-	// 	} else {
-	// 		//no hay pero existe el mail
-	// 		User.find({"email": params.email}).then(user=>{ 
-	// 			console.log(user)
-	// 			if (user.length > 0) {
-	// 				res.json({
-	// 					error: true,
-	// 					color: 'red',
-	// 					mensaje: 'Contraseña incorrecta.'
-	// 				})
-	// 			} else {
-	// 				res.json({
-	// 					error: true,
-	// 					color: 'red',
-	// 					mensaje: 'Credenciales incorrectas. Logueate, por favor.'
-	// 				})
-	// 			}
-	// 		})
 
-	// 	}
-	// })
+router.get('/signIn' , (req, res) => { 
+	//Se obtiene con req.body EN LOCAL
+	//Se obtiene con req.query EN HEROKU
+	let params = req.query
+	Object.keys(params).length < 1 ? params = req.body : null
+	
+
+	User.find({"email": params.email, "password": params.password}).then(user=>{ 
+		// hay usuario
+		if (user.length > 0) {
+			res.json({
+				error: false
+			})
+		} else {
+			//no hay pero existe el mail
+			User.find({"email": params.email}).then(user=>{ 
+				console.log(user)
+				if (user.length > 0) {
+					res.json({
+						error: true,
+						color: 'red',
+						mensaje: 'Contraseña incorrecta.'
+					})
+				} else {
+					res.json({
+						error: true,
+						color: 'red',
+						mensaje: 'Credenciales incorrectas. Logueate, por favor.'
+					})
+				}
+			})
+
+		}
+	})
 }) 
 
 
