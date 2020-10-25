@@ -4,7 +4,7 @@ const User = require('../models/Auth') //modelo que viene de Models, es así com
 
 
 router.get('/signUp' , (req, res) => { 
-	User.find({"email": req.query.email}).then(user=>{ 
+	User.find({"email": req.body.email}).then(user=>{ 
 		//hay un registro
 		if(user.length > 0){
 			res.json({
