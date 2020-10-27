@@ -17,7 +17,7 @@ router.get('/' , (req, res) => {
 ////////////// 2- Async Await //////////////
 //Se obtiene con req.body
 router.post('/', async (req, res) => {			
-	client.search(req.body.localidad, options)
+	client.search(req.body.localidad + ' paisaje Argentina', options)
     .then(images => {
     	const newEncuentro = new Encuentros(req.body)
     	newEncuentro.src = images[0].url
